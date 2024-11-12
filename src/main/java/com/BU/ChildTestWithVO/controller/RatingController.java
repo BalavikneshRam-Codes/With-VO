@@ -20,8 +20,12 @@ public class RatingController {
     Logger logger = LoggerFactory.getLogger(RatingController.class);
     @PostMapping("/submit")
     public ResponseEntity<String> submitRating(@RequestBody RatingRequest ratingRequest){
+        try{
         logger.info("got ChildId and each question score and goes to Service Layer");
         ratingService.saveRating(ratingRequest.getChildId(),ratingRequest.getRatings(),logger);
+        }catch (RuntimeException e){
+            logger.info(e.getMessage());
+        }
         return ResponseEntity.ok("Rating save successfully");
     }
 

@@ -18,7 +18,11 @@ public class ScoreController {
     Logger logger = LoggerFactory.getLogger(ScoreController.class);
     @GetMapping("/allscore")
     public List<ScoreVO> getAllscore(){
-        logger.info("ALl score request has been called and goes to Service Layer");
+        try {
+            logger.info("ALl score request has been called and goes to Service Layer");
+        }catch (RuntimeException e){
+            logger.info(e.getMessage());
+        }
          return scoreService.getAllscore(logger);
     }
 }

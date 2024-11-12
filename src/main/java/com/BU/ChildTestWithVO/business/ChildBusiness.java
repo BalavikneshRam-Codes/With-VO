@@ -29,30 +29,24 @@ public class ChildBusiness {
 
 
     public ChildVO save(ChildVO childVO) {
-        // Null checks at the start
         if (childVO == null || childVO.getFrameworkVO() == null || childVO.getFrameworkVO().getFrameworkId() == null) {
             throw new IllegalArgumentException("Framework ID must be provided");
         }
 
-        // Fetch Framework from the database
         Framework framework = frameworkRepository.findById(childVO.getFrameworkVO().getFrameworkId())
                 .orElseThrow(() -> new IllegalArgumentException("Framework not found"));
 
-        // Create and save the Child entity
         Child child = new Child();
         child.setChildName(childVO.getChildName());
         child.setFramework(framework);
         child = childRepository.save(child);
 
-        // Update childVO with the generated childId
         childVO.setChildId(child.getChildId());
 
-        // Map Framework details to FrameworkVO
         FrameworkVO frameworkVO = new FrameworkVO();
         frameworkVO.setFrameworkId(framework.getFrameworkId());
         frameworkVO.setFrameworkName(framework.getFrameworkName());
 
-        // Map Questions to QuestionVO
         List<QuestionVO> questionVOS = (framework.getQuestions() != null ? framework.getQuestions().stream().map(
                 question -> {
                     QuestionVO questionVO = new QuestionVO();
